@@ -2,7 +2,7 @@ import numpy as np
 
 class Variable:
     def __init__(self, data, name=None):
-        self.data = data
+        self.data = np.array(data,dtype='float64')
         self.name = name
         self.grad = None
         self.creator = None
@@ -15,7 +15,6 @@ class Variable:
     def backward(self, retain_grad=False):
         if self.grad is None:
             self.grad = np.ones_like(self.data)
-        # funcs = [self.creator]
 
         funcs = []
         seen_set = set()
@@ -131,5 +130,5 @@ def as_variable(obj):
 
 def as_array(x):
     if np.isscalar(x):
-        return np.array(x)
+        return np.array(x,dtype='float64')
     return x
