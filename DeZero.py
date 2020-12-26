@@ -1,32 +1,25 @@
 import numpy as np
 from Variable import Variable, numerical_diff, var
 from Function import Function, goldstein, rosenbrock
-from Calculations import square, exp, add, mul, my_sin
+from Calculations import square, exp, add, mul, my_sin, sin, cos
 from Context import using_config, no_grad
 from utils import plot_dot_graph, _dot_func, _dot_var
 import matplotlib.pyplot as plt
 
+x = var(np.linspace(-7,7,200))
+y = sin(x)
+y.backward(create_graph=True)
 
-def f(x):
-    y = x ** 4 - 2 * x ** 2
-    return y
+logs = [y.data.flatten()]
 
-
-def gx2(x):
-    return 12*x ** 2 - 4
-
-x = var(0)
-y = var(2)
-iters = 2000
-lr = 0.001
-
-for i in range(iters):
-    print(x,y)
-
-    z = rosenbrock(x,y)
-
+for i in range(3):
+    logs.append(x.grad.data.flatten())
+    gx = x.grad
     x.cleargrad()
-    y.cleargrad()
-    z.backward()
-    x.data -= lr  if x.grad > 0 else -lr
-    y.data -= lr  if y.grad > 0 else -lr
+    gx.backward(create_graph=True)
+
+labels = ["y=sin(x)","y'","y''","y'''"]
+for i,v in enumerate(logs):
+    plt.plot(x.data, logs[i], label=labels[i])
+plt.legend(loc='lower right')
+plt.show()

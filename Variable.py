@@ -1,7 +1,11 @@
 import numpy as np
+from Config import using_config
 
 class Variable:
     def __init__(self, data, name=None):
+        if data is not None:
+            if not isinstance(data, np.ndarray):
+                raise TypeError('{} is not supported'.format(type(data)))
         self.data = np.array(data,dtype='float64')
         self.name = name
         self.grad = None
@@ -12,9 +16,9 @@ class Variable:
         self.creator = func
         self.generation = func.generation+1
 
-    def backward(self, retain_grad=False):
+    def backward(self, retain_grad=False, create_graph=False):
         if self.grad is None:
-            self.grad = np.ones_like(self.data)
+            self.grad = Variable(np.ones_like(self.data))
 
         funcs = []
         seen_set = set()
@@ -30,18 +34,20 @@ class Variable:
         while funcs:
             f = funcs.pop()
             gys = [output().grad for output in f.outputs]
-            gxs = f.backward(*gys)
-            if not isinstance(gxs, tuple):
-                gxs = (gxs,)
 
-            for x, gx in zip(f.inputs, gxs):
-                if x.grad is None:
-                    x.grad = gx
-                else:
-                    x.grad = x.grad + gx
+            with using_config('enable_backprop', create_graph):
+                gxs = f.backward(*gys)
+                if not isinstance(gxs, tuple):
+                    gxs = (gxs,)
 
-                if x.creator is not None:
-                    add_func(x.creator)
+                for x, gx in zip(f.inputs, gxs):
+                    if x.grad is None:
+                        x.grad = gx
+                    else:
+                        x.grad = x.grad + gx
+
+                    if x.creator is not None:
+                        add_func(x.creator)
 
         if not retain_grad:
             for y in f.outputs:
@@ -112,9 +118,16 @@ class Variable:
         from Calculations import pow
         return pow(self, other)
 
-def var(x):
-    return Variable(np.array([x]))
+    def __truediv__(self,other):
+        from Calculations import div
+        return div(self, other)
+    
+    def __rtruediv__(self,other):
+        from Calculations import rdiv
+        return rdiv(self,other)
 
+def var(x):
+    return Variable(np.array(x))
 
 def numerical_diff(f, x, eps=1e-4):
     x0 = Variable(x.data - eps)
