@@ -1,6 +1,7 @@
 from Function import Function
 import numpy as np
-from Variable import as_array
+from Variable import as_array, var
+import math
 
 class Square(Function):
     def forward(self, x):
@@ -71,6 +72,16 @@ class Pow(Function):
         gx = c * x ** (c-1) * gy
         return gx
 
+class Sin(Function):
+    def forward(self, x):
+        y = np.sin(x)
+        return y
+    
+    def backward(self, gy):
+        x = self.inputs[0].data
+        gx = gy * np.cos(x)
+        return gx
+
 def pow(x,c):
     return Pow(c)(x)
 
@@ -101,3 +112,16 @@ def add(x0, x1):
 
 def mul(x0, x1):
     return Mul()(x0, x1)
+
+def my_sin(x, threshold=0.0001):
+    y = 0
+    for i in range(100000):
+        c = (-1) ** i / math.factorial(2*i+1)
+        t = c * x ** (2*i+1)
+        y = y+t
+        if abs(t.data) < threshold:
+            break
+    return y
+
+def sin(x):
+    return Sin()(x)

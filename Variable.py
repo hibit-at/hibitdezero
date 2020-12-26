@@ -54,6 +54,10 @@ class Variable:
 
     @property
     def shape(self):
+        if isinstance(self.data, int):
+            return np.array([1])
+        if isinstance(self.data, float):
+            return np.array([1])
         return self.data.shape
 
     @property
