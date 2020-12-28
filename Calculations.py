@@ -1,6 +1,6 @@
 from Function import Function
 import numpy as np
-from Variable import as_array, var
+from Variable import as_array, var, as_variable
 import math
 
 
@@ -98,15 +98,64 @@ class Sin(Function):
         # gx = gy * 1
         return gx
 
+
 class Cos(Function):
     def forward(self, x):
         y = np.cos(x)
         return y
-    
+
     def backward(self, gy):
         x, = self.inputs
         gx = gy * -sin(x)
         return gx
+
+
+class Tanh(Function):
+    def forward(self, x):
+        y = np.tanh(x)
+        return y
+
+    def backward(self, gy):
+        y = self.outputs[0]()
+        gx = gy*(1-y*y)
+        return gx
+
+
+class Reshape(Function):
+    def __init__(self, shape):
+        self.shape = shape
+
+    def forward(self, x):
+        self.x_shape = x.shape
+        y = x.reshape(self.shape)
+        return y
+
+    def backward(self, gy):
+        return reshape(gy, self.x_shape)
+
+
+class Transpose(Function):
+    def forward(self, x):
+        y = np.transpose(x)
+        return y
+
+    def backward(self, gy):
+        gx = tranpose(gy)
+        return gx
+
+
+def transpose(x):
+    return Transpose()(x)
+
+
+def reshape(x, shape):
+    if x.shape == shape:
+        return as_variable(x)
+    return Reshape(shape)(x)
+
+
+def tanh(x):
+    return Tanh()(x)
 
 
 def pow(x, c):
@@ -130,9 +179,11 @@ def neg(x):
 def square(x):
     return Square()(x)
 
+
 def rdiv(x0, x1):
     x1 = as_array(x1)
     return Div()(x1, x0)
+
 
 def div(x0, x1):
     x1 = as_array(x1)
@@ -166,6 +217,7 @@ def my_sin(x, threshold=0.0001):
 
 def sin(x):
     return Sin()(x)
+
 
 def cos(x):
     return Cos()(x)

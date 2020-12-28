@@ -126,6 +126,21 @@ class Variable:
         from Calculations import rdiv
         return rdiv(self,other)
 
+    def reshape(self, *shape):
+        from Calculations import reshape
+        if len(shape) == 1 and isinstance(shape[0],(tuple,list)):
+            shape = shape[0]
+        return reshape(self, shape)
+
+    def transpose(self):
+        from Calculations import transpose
+        return transpose(self)
+    
+    @property
+    def T(self):
+        from Calculations import transpose
+        return transpose(self)
+
 def var(x):
     return Variable(np.array(x))
 
