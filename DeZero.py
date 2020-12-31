@@ -6,7 +6,10 @@ from Context import using_config, no_grad
 from utils import plot_dot_graph, _dot_func, _dot_var
 import matplotlib.pyplot as plt
 
-x = Variable(np.array([[1, 2, 3], [4, 5, 6]]))
-y = x.transpose()
-y = x.T
-print(y)
+x = var([[1, 2, 3],[4,5,6]])
+y = var([10,20,30])
+z = x+y
+print(z)
+
+z.backward()
+print(y.grad)
