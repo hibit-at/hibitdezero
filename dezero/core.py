@@ -139,6 +139,9 @@ class Variable:
     def T(self):
         return dezero.functions.transpose(self)
 
+class Parameter(Variable):
+    pass
+
 
 class Function:
 

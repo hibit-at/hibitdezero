@@ -189,6 +189,7 @@ class ReLU(Function):
         return gx
 
 
+
 def relu(x):
     return ReLU()(x)
 
@@ -210,10 +211,6 @@ def linear_simple(x, W, b=None):
     y = t + b
     t.data = None
     return y
-
-
-def mean_square_error(x0, x1):
-    return MeanSquarError()(x0, x1)
 
 
 def exp(x):
