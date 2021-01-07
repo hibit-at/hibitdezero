@@ -15,7 +15,10 @@ class Variable:
                 raise TypeError('{} is not supported'.format(type(data)))
         if isinstance(data, dezero.core.Variable):
             data = data.data
-        self.data = np.array(data, dtype='float64')
+        if data is not None:
+            self.data = np.array(data, dtype='float64')
+        else:
+            self.data = None
         self.name = name
         self.grad = None
         self.creator = None
@@ -143,6 +146,8 @@ class Variable:
 class Parameter(Variable):
     pass
 
+def par(x):
+    return Parameter(np.array(x))
 
 class Function:
 
