@@ -4,34 +4,19 @@ from dezero import functions as F
 import matplotlib.pyplot as plt
 import dezero.layers as L
 
-np.random.seed(0)
-x = np.random.rand(100,1)
-y = np.sin(2*np.pi*x) + np.random.rand(100,1)
+model = L.Layer()
+model.l1 = L.Linear(5)
+model.l2 = L.Linear(2)
 
-l1 = L.Linear(10)
-l2 = L.Linear(1)
+print(model)
 
-def predict(x):
-    y = l1(x)
+def predict(model, x):
+    y = model.l1(x)
     y = F.sigmoid(y)
-    y = l2(y)
+    y = model.l2(y)
     return y
 
+for p in model.params():
+    print(p)
 
-lr = 0.2
-iters = 10000
-
-for i in range(iters):
-    y_pred = predict(x)
-    loss = F.mean_squared_error(y, y_pred)
-
-    l1.cleargrad()
-    l2.cleargrad()
-    loss.backward()
-
-    for l in [l1,l2]:
-        for p in l.params():
-            p.data -= lr*p.grad.data
-    
-    if i%1000 == 0:
-        print(loss)
+model.cleargrad()
