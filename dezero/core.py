@@ -146,8 +146,10 @@ class Variable:
 class Parameter(Variable):
     pass
 
-def par(x):
-    return Parameter(np.array(x))
+
+def par(x, name=None):
+    return Parameter(np.array(x), name)
+
 
 class Function:
 
@@ -318,7 +320,8 @@ def setup_variable():
     Variable.__truediv__ = div
     Variable.__rtruediv__ = rdiv
     Variable.__pow__ = original_pow
+    Variable.__getitem__ = dezero.functions.get_item
 
 
-def var(x):
-    return Variable(np.array(x))
+def var(x, name=None):
+    return Variable(np.array(x), name)

@@ -9,7 +9,7 @@ def _dot_var(v, verbose=False):
     if verbose and v.data is not None:
         if v.name is not None:
             name += ': '
-        name += str(v.shape) + ' ' + str(v.shape)
+        name += str(v.shape) + ' ' + str(v.data.dtype)
     return dot_var.format(id(v), name)
 
 

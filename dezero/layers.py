@@ -67,3 +67,4 @@ class Linear(Layer):
 
         y = F.linear(x, self.W, self.b)
         return y
+
