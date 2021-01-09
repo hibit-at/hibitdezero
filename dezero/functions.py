@@ -1,8 +1,7 @@
-from dezero.core import Function
-from dezero.core import as_variable
-from dezero import utils
 import numpy as np
-
+import dezero
+from dezero import cuda,utils
+from dezero.core import Function, Variable, as_variable, as_array
 
 class Tanh(Function):
     def forward(self, x):
@@ -264,7 +263,6 @@ class GetItem(Function):
         self.slices = slices
 
     def forward(self, x):
-        x = as_variable(x)
         y = x[self.slices]
         return y
 

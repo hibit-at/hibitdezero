@@ -16,7 +16,7 @@ class Variable:
         if isinstance(data, dezero.core.Variable):
             data = data.data
         if data is not None:
-            self.data = np.array(data, dtype='float64')
+            self.data = np.array(data)
         else:
             self.data = None
         self.name = name
