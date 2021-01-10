@@ -35,7 +35,7 @@ class Layer:
             else:
                 yield obj
 
-    def cleargrad(self):
+    def cleargrads(self):
         for param in self.params():
             param.cleargrad()
 
