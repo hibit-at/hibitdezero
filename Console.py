@@ -8,43 +8,55 @@ from dezero import datasets as D
 import matplotlib.pyplot as plt
 import math
 
-# Hyperparameters
 max_epoch = 300
 batch_size = 30
 hidden_size = 10
 lr = 1.0
 
-x, t = dezero.datasets.get_spiral(train=True)
-model = M.MLP((hidden_size, 3))
+train_set = D.Spiral(train=True)
+test_set = D.Spiral(train=False)
+train_loader = D.DataLoader(train_set, batch_size)
+test_loader = D.DataLoader(test_set, batch_size, shuffle=True)
+
+model = M.MLP((hidden_size, 10))
 optimizer = O.SGD(lr).setup(model)
 
-data_size = len(x)
-max_iter = math.ceil(data_size / batch_size)
-
-loss_graph = []
+test_loss_graph = []
+train_loss_graph = []
 
 for epoch in range(max_epoch):
-    # Shuffle index for data
-    index = np.random.permutation(data_size)
-    sum_loss = 0
+    sum_loss, sum_acc = 0, 0
 
-    for i in range(max_iter):
-        batch_index = index[i * batch_size:(i + 1) * batch_size]
-        batch_x = x[batch_index]
-        batch_t = t[batch_index]
-
-        y = model(batch_x)
-        loss = F.softmax_cross_entropy(y, batch_t)
+    for x, t in train_loader:
+        y = model(x)
+        loss = F.softmax_cross_entropy(y, t)
+        acc = F.accuracy(y, t)
         model.cleargrads()
         loss.backward()
         optimizer.update()
-        sum_loss += float(loss.data) * len(batch_t)
 
-    # Print loss every epoch
-    avg_loss = sum_loss / data_size
-    print('epoch %d, loss %.2f' % (epoch + 1, avg_loss))
-    loss_graph.append(loss)
+        sum_loss += float(loss.data) * len(t)
+        sum_acc += float(acc.data) * len(t)
 
-x = np.arange(len(loss_graph))
-plt.plot(x,loss_graph)
+    print('epoch: {}'.format(epoch+1))
+    print('train loss: {:.4f}, accuracy: {:.4f}'.format(
+        sum_loss / len(train_set), sum_acc / len(train_set)))
+
+    train_loss_graph.append(sum_loss / len(train_set))
+
+    with dezero.no_grad():
+        for x, t in test_loader:
+            y = model(x)
+            loss = F.softmax_cross_entropy(y, t)
+            acc = F.accuracy(y, t)
+            sum_loss += float(loss.data) * len(t)
+            sum_acc += float(acc.data) * len(t)
+
+    print('test loss: {:.4f}, accuracy: {:.4f}'.format(
+        sum_loss / len(test_set), sum_acc / len(test_set)))
+    
+    test_loss_graph.append(sum_loss / len(test_set))
+
+plt.plot(np.arange(max_epoch),train_loss_graph)
+plt.plot(np.arange(max_epoch),test_loss_graph)
 plt.show()
