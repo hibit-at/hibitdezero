@@ -29,6 +29,8 @@ class SGD(Optimizer):
         self.lr = lr
     
     def update_one(self, param):
+        from dezero import cuda
+        param.to_gpu()
         param.data -= self.lr * param.grad.data
 
 class MomentumSGD(Optimizer):

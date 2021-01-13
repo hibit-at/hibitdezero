@@ -13,6 +13,19 @@ def pair(x):
     else:
         raise ValueError
 
+import urllib.request
+
+def show_progress(block_num, block_size, total_size):
+    bar_template = "\r[{}] {:.2f}%"
+
+    downloaded = block_num * block_size
+    p = downloaded / total_size * 100
+    i = int(downloaded / total_size * 30)
+    if p >= 100.0: p = 100.0
+    if i >= 30: i = 30
+    bar = "#" * i + "." * (30 - i)
+    print(bar_template.format(bar, p), end='')
+
 def get_file(url, file_name=None):
     """Download a file from the `url` if it is not in the cache.
     The file at the `url` is downloaded to the `~/.dezero`.
@@ -148,3 +161,15 @@ def logsumexp(x, axis=1):
     xp.log(s, out=s)
     m += s
     return m
+
+def get_conv_outsize(input_size, kernel_size, stride, pad):
+    return(input_size + pad*2 - kernel_size) // stride + 1
+
+def pair(x):
+    if isinstance(x, int):
+        return (x, x)
+    elif isinstance(x, tuple):
+        assert len(x) == 2
+        return x
+    else:
+        raise ValueError

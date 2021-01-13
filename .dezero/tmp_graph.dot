@@ -1,47 +1,23 @@
 digraph g{
-2696461801608 [label="(100, 1) float64", color=orange, style=filled]
-2696461052488 [label="Linear", color=lightblue, style=filled, shape=box]
-2696460894728 -> 2696461052488
-2696461847560 -> 2696461052488
-2696463026248 -> 2696461052488
-2696461052488 -> 2696461801608
-2696460894728 [label="(100, 10) float64", color=orange, style=filled]
-2696461847560 [label="W: (10, 1) float32", color=orange, style=filled]
-2696463026248 [label="b: (1,) float64", color=orange, style=filled]
-2696461454984 [label="Sigmoid", color=lightblue, style=filled, shape=box]
-2696462662152 -> 2696461454984
-2696461454984 -> 2696460894728
-2696462662152 [label="(100, 10) float64", color=orange, style=filled]
-2696461675400 [label="Linear", color=lightblue, style=filled, shape=box]
-2696461453128 -> 2696461675400
-2696461424200 -> 2696461675400
-2696457526984 -> 2696461675400
-2696461675400 -> 2696462662152
-2696461453128 [label="(100, 10) float64", color=orange, style=filled]
-2696461424200 [label="W: (10, 10) float32", color=orange, style=filled]
-2696457526984 [label="b: (10,) float64", color=orange, style=filled]
-2696461251976 [label="Sigmoid", color=lightblue, style=filled, shape=box]
-2696461303048 -> 2696461251976
-2696461251976 -> 2696461453128
-2696461303048 [label="(100, 10) float64", color=orange, style=filled]
-2696461729096 [label="Linear", color=lightblue, style=filled, shape=box]
-2696462757000 -> 2696461729096
-2696455769224 -> 2696461729096
-2696461668424 -> 2696461729096
-2696461729096 -> 2696461303048
-2696462757000 [label="(100, 10) float64", color=orange, style=filled]
-2696455769224 [label="W: (10, 10) float32", color=orange, style=filled]
-2696461668424 [label="b: (10,) float64", color=orange, style=filled]
-2696459679432 [label="Sigmoid", color=lightblue, style=filled, shape=box]
-2696462754184 -> 2696459679432
-2696459679432 -> 2696462757000
-2696462754184 [label="(100, 10) float64", color=orange, style=filled]
-2696457532232 [label="Linear", color=lightblue, style=filled, shape=box]
-2696462775048 -> 2696457532232
-2696199939336 -> 2696457532232
-2696448533192 -> 2696457532232
-2696457532232 -> 2696462754184
-2696462775048 [label="(100, 1) float64", color=orange, style=filled]
-2696199939336 [label="W: (1, 10) float32", color=orange, style=filled]
-2696448533192 [label="b: (10,) float64", color=orange, style=filled]
+1810487400520 [label="(10, 10) float32", color=orange, style=filled]
+1810490022984 [label="Linear", color=lightblue, style=filled, shape=box]
+1810487400648 -> 1810490022984
+1810487400712 -> 1810490022984
+1810487401736 -> 1810490022984
+1810490022984 -> 1810487400520
+1810487400648 [label="(10, 1000) float32", color=orange, style=filled]
+1810487400712 [label="W: (1000, 10) float32", color=orange, style=filled]
+1810487401736 [label="b: (10,) float32", color=orange, style=filled]
+1810486325640 [label="Sigmoid", color=lightblue, style=filled, shape=box]
+1810871791368 -> 1810486325640
+1810486325640 -> 1810487400648
+1810871791368 [label="(10, 1000) float32", color=orange, style=filled]
+1810490022856 [label="Linear", color=lightblue, style=filled, shape=box]
+1810487664328 -> 1810490022856
+1810482282440 -> 1810490022856
+1812475147784 -> 1810490022856
+1810490022856 -> 1810871791368
+1810487664328 [label="(10, 784) float32", color=orange, style=filled]
+1810482282440 [label="W: (784, 1000) float32", color=orange, style=filled]
+1812475147784 [label="b: (1000,) float32", color=orange, style=filled]
 }
